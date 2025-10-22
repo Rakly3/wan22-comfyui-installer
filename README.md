@@ -1,28 +1,30 @@
-# ComfyUI with WAN Animate 2.2 - Automated Installer for Windows
+# ComfyUI WAN Animate 2.2 - Automated Installer
 
-**Fully automated Python installation script** for ComfyUI with WAN Animate 2.2 support, featuring parallel model downloads, CUDA optimization, and comprehensive error handling.
+> Fully automated Python installation script for ComfyUI with WAN Animate 2.2 support, featuring parallel model downloads, CUDA optimization, and comprehensive error handling.
 
-## Table of Contents
+<br>
 
-- [Quick Start](#quick-start)
-- [Models](#models)
-- [System Requirements](#system-requirements)
-- [Command Line Arguments](#command-line-arguments)
-  - [Installation Options](#installation-options)
-  - [Virtual Environment Management](#virtual-environment-management)
-- [Running ComfyUI](#running-comfyui)
-- [Common Tasks](#common-tasks)
-  - [Skipping Model Downloads](#skipping-model-downloads)
+## 📋 Table of Contents
+
+- [Quick Start](#-quick-start)
+- [Models](#-models)
+- [System Requirements](#-system-requirements)
+- [Command Line Arguments](#-command-line-arguments)
+- [Examples](#examples)
+- [Virtual Environment Management](#-virtual-environment-management)
+- [Running ComfyUI with WAN 2.2](#running-comfyui-with-wan-22)
+- [Common Tasks](#-common-tasks)
+  - [Skipping Model Downloads](#-skipping-model-downloads)
   - [Re-running After Failures](#re-running-after-failures)
   - [Fixing Broken ComfyUI Installation](#fixing-broken-comfyui-installation)
   - [Fresh Virtual Environment Installation](#fresh-virtual-environment-installation)
 - [Troubleshooting](#troubleshooting)
-- [Resources](#resources)
-- [License](#license)
+- [Resources](#-resources)
+- [License](#-license)
 
----
+<br>
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 # Basic installation (recommended)
@@ -32,25 +34,23 @@ python install_comfyui-wan22.py
 python install_comfyui-wan22.py --help
 ```
 
-**What happens (default settings):**
-1. Validate prerequisites (Windows, Python, Git, internet, disk space)
-2. Download & extract ComfyUI v0.3.65 source
-3. Downloads models in background
-4. Create Python virtual environment
-5. Install PyTorch 2.9.0 + CUDA 13.0
-6. Install ComfyUI dependencies
-7. Clone 8 WAN Animate 2.2 required custom nodes
-8. Install Triton Windows, SageAttention, hf_transfer
-9. Wait for model downloads to complete (~40GB)
-10. Create launch scripts (.bat & .ps1)
+### default settings:
+> 1. Validate prerequisites (Windows, Python, Git, internet, disk space)
+> 2. Download & extract ComfyUI v0.3.65 source
+> 3. Downloads models in background
+> 4. Create Python virtual environment
+> 5. Install PyTorch 2.9.0 + CUDA 12.8
+> 6. Install ComfyUI dependencies
+> 7. Clone 8 WAN Animate 2.2 required custom nodes
+> 8. Install Triton Windows, SageAttention, hf_transfer
+> 9. Wait for model downloads to complete (~40GB)
+> 10. Create launch scripts (.bat & .ps1)
 
----
+**Note:** *Everything is configurable in the script.*
 
-## Models
+<br>
 
-**11 files, ~40GB total**
-
-Downloaded automatically from [HuggingFace/Aitrepreneur/FLX](https://huggingface.co/Aitrepreneur/FLX):
+## 📦 Models
 
 | Category | Files | Size | Description |
 |----------|-------|------|-------------|
@@ -61,25 +61,28 @@ Downloaded automatically from [HuggingFace/Aitrepreneur/FLX](https://huggingface
 | **sams** | 1 | 7.5GB | Segment Anything Model (SeC-4B) |
 | **text_encoders** | 1 | 10.8GB | UMT5-XXL encoder |
 | **vae** | 1 | 242MB | Video autoencoder |
+| | **11 files** | ~40GB |
 
----
+Downloaded automatically from [HuggingFace/Aitrepreneur/FLX](https://huggingface.co/Aitrepreneur/FLX)
 
-## System Requirements
+<br>
 
-- Windows 10/11 x64
-- Python 3.9 or newer
-- Git installed and in PATH
-- Internet connectivity
-- 60GB+ free disk space
-- NVIDIA GPU with CUDA support
-- NVIDIA Driver 560 or newer
-- RTX 20 series and newer
+## 💻 System Requirements
 
----
+| Component | Requirement |
+|-----------|-------------|
+| **OS** | Windows 10/11 x64 |
+| **Python** | 3.9 or newer |
+| **Git** | Installed and in PATH |
+| **Internet** | Stable connectivity |
+| **Storage** | 60GB+ free disk space |
+| **GPU** | NVIDIA GPU with CUDA support |
+| **Driver** | NVIDIA Driver 560 or newer |
+| **Architecture** | RTX 20 series and newer |
 
-## Command Line Arguments
+<br>
 
-**Note:** Command-line arguments override script settings.
+## ⚙️ Command Line Arguments
 
 ```bash
 --python VERSION         # Python version for venv (e.g., "3.12", "3.11.5")
@@ -92,7 +95,12 @@ Downloaded automatically from [HuggingFace/Aitrepreneur/FLX](https://huggingface
 --reinstall-comfyui      # Force re-download ComfyUI and extract
 ```
 
-**Examples:**
+**Note:** *Command-line arguments override script settings.*
+
+<br>
+
+## **Examples:**
+
 ```bash
 # Use Python 3.12 with custom path
 python install_comfyui-wan22.py --python 3.12 --path "D:\AI\ComfyUI"
@@ -110,7 +118,9 @@ python install_comfyui-wan22.py --skip-models
 python install_comfyui-wan22.py --reinstall-comfyui
 ```
 
-### Virtual Environment Management
+<br>
+
+### 🐍 Virtual Environment Management
 
 ```bash
 --clear-venv         # Clear venv only (no reinstall, exits after clearing)
@@ -134,35 +144,37 @@ python install_comfyui-wan22.py --reinstall-venv --no-cache
 python install_comfyui-wan22.py --upgrade-venv --python 3.12
 ```
 
----
+<br>
 
-## Running ComfyUI
+## Running ComfyUI with WAN 2.2
 
 After installation completes, launch ComfyUI:
 
-### Option 1: Batch Script
+### Batch Script
 ```bash
 ComfyUI-0.3.65\run_comfyui.bat
 ```
 
-### Option 2: PowerShell Script
+### PowerShell Script
 ```powershell
 .\ComfyUI-0.3.65\run_comfyui.ps1
 ```
 
-### Option 3: Manually
-```bash
+### 🛠️ Option 3: Manually
+```cmd
 cd ComfyUI-0.3.65
 venv\Scripts\activate.bat
 python main.py --listen localhost --port 8188
 ```
 
-**Access ComfyUI:**
-- Default: http://localhost:8188
+### 🌐 Access ComfyUI:
+- **Default URL:** http://localhost:8188
 
----
+<br>
 
-### Skipping Model Downloads
+## 📝 Common Tasks
+
+### ⏭️ Skipping Model Downloads
 
 For quick testing or if you want to download models manually:
 
@@ -170,7 +182,7 @@ For quick testing or if you want to download models manually:
 python install_comfyui-wan22.py --skip-models
 ```
 
-Models can be manually downloaded from: https://huggingface.co/Aitrepreneur/FLX
+> **📥 Manual Download:** Models can be downloaded from: https://huggingface.co/Aitrepreneur/FLX
 
 ### Re-running After Failures
 
@@ -178,6 +190,8 @@ If installation or model downloads fail:
 
 ```bash
 # Try re-running the script
+# Try with different settings if needed
+
 python install_comfyui-wan22.py
 ```
 
@@ -187,6 +201,7 @@ python install_comfyui-wan22.py
 # Re-download ComfyUI and re-extract
 python install_comfyui-wan22.py --reinstall-comfyui
 ```
+
 ### Fresh Virtual Environment Installation
 
 ```bash
@@ -196,36 +211,56 @@ python install_comfyui-wan22.py --reinstall-venv
 # Or manually delete the venv directory
 ```
 
----
+<br>
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
 | Issue | Solution |
 |-------|----------|
-| **"CUDA required" error** | Script requires CUDA-enabled PyTorch. Edit `PYTORCH_VERSION` to include `+cu###` (e.g., `2.9.0+cu130`) |
-| **"No NVIDIA GPU detected"** | Warning only - installation continues. Verify GPU with `nvidia-smi` command. Update NVIDIA drivers to 560+ for CUDA 13.0. |
-| **"SageAttention version mismatch"** | Edit `SAGEATTENTION_WHEEL_URL` to match your `PYTORCH_VERSION`. Check [SageAttention releases](https://github.com/woct0rdho/SageAttention/releases). |
+| **CUDA required error** | Script requires CUDA-enabled PyTorch. Edit `PYTORCH_VERSION` to include `+cu###` (e.g., `2.9.0+cu130`) |
+| **No NVIDIA GPU detected error** | Warning only - installation continues. Verify GPU with `nvidia-smi` command. Update NVIDIA drivers to 560+ for CUDA 13.0. |
+| **SageAttention version mismatch error** | Edit `SAGEATTENTION_WHEEL_URL` to match your `PYTORCH_VERSION`. Check [SageAttention releases](https://github.com/woct0rdho/SageAttention/releases). |
 | **Model downloads fail** | Re-run script (retries failed downloads only). Check log file for specific errors. Slow/unstable internet may require multiple runs. |
-| **"Prerequisites check failed"** | Check `comfyui_installation.log`. Common: Python < 3.9, Git not installed, < 60GB free space, no internet. |
+| **Prerequisites check failed error** | Check `comfyui_installation.log`. Common: Python < 3.9, Git not installed, < 60GB free space, no internet. |
 | **Corrupted ComfyUI files** | Run `python install_comfyui-wan22.py --reinstall-comfyui` to re-extract (preserves venv/models). |
-| **"requirements.txt not found"** | ComfyUI extraction failed or incomplete. Run `python install_comfyui-wan22.py --reinstall-comfyui`. |
+| **requirements.txt not found error** | ComfyUI extraction failed or incomplete. Run `python install_comfyui-wan22.py --reinstall-comfyui`. |
 | **PowerShell script blocked** | Run as Admin: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
-| **Port 8188 already in use** | Edit `COMFYUI_LOCAL_PORT = 8000` (or other port) in script before install. |
+| **Port 8188 already in use** | Edit `COMFYUI_LOCAL_PORT = 8188` (or other port) in script before install. |
 
----
 
-## Resources
+<br>
+
+## 📚 Resources
 
 ### Dependencies
 - **Triton Windows:** https://github.com/woct0rdho/triton-windows/releases
 - **SageAttention:** https://github.com/woct0rdho/SageAttention/releases
 - **PyTorch:** https://pytorch.org/get-started/locally/
 
-## License
+<br>
+
+## 📄 License
 
 This installer script is provided as-is. ComfyUI and all dependencies have their own licenses. Please review:
-- ComfyUI: GPL-3.0
-- PyTorch: BSD-3-Clause
-- Individual custom nodes: See respective repositories
+
+| Component | License |
+|-----------|---------|
+| **ComfyUI** | [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) |
+| **PyTorch** | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
+| **Custom Nodes** | See respective repositories |
+
+<br>
+
+---
+---
+
+<br>
+
+<div align="center">
+
+**⭐ If this installer helped you, please consider giving it a star! ⭐**
+
+</div>
+
