@@ -27,13 +27,14 @@ from typing import Optional, Dict, List, Tuple
 # ============================================================================
 
 # Python Version for Virtual Environment
-# Specify version to use (e.g., "3.12", "3.11.5") or None to use current Python
-PYTHON_VERSION = None
+# Specify version to use (e.g., "3.12", "3.11.5")
+PYTHON_VERSION = "3.9"
 
 # Find versions at: https://github.com/comfyanonymous/ComfyUI/releases
 COMFYUI_VERSION = "v0.3.65"
 
 # None, "auto", "default", or "" = auto-generate from COMFYUI_VERSION
+# Example: r"D:\ComfyUI-0.3.65"
 INSTALL_PATH = None
 
 # Virtual Environment Name
@@ -41,26 +42,27 @@ VENV_NAME = "venv"
 
 # CUDA version must match your GPU drivers (CUDA required for WAN Animate 2.2)
 # Examples: "2.8.0+cu128" (CUDA 12.8), "2.8.0+cu124" (CUDA 12.4), "2.9.0+cu128" (CUDA 12.8)
-PYTORCH_VERSION = "2.9.0+cu128"
+PYTORCH_VERSION = "2.8.0+cu128"
 
 # Model Repository - Where to download WAN Animate 2.2 models
 HUGGINGFACE_BASE = "https://huggingface.co/Aitrepreneur/FLX/resolve/main"
 
 # Additional Components - Performance optimizations
 # Triton version constraint (see: https://github.com/woct0rdho/triton-windows/releases)
-# - Triton 3.5 requires PyTorch >= 2.9
-# - Triton 3.4 requires PyTorch >= 2.8
-# - Triton 3.3 requires PyTorch >= 2.7
-TRITON_VERSION = "triton-windows<3.6"  # Use 3.5.x for PyTorch 2.9.0
+# - Pytorch 2.9.x requires Triton 3.5
+# - Pytorch 2.8.x requires Triton 3.4
+# - Pytorch 2.7.x requires Triton 3.3
+# Example: TRITON_VERSION = "3.5"
+TRITON_VERSION = "3.5"
 
+# IMPORTANT: Must match your "PYTORCH_VERSION" above!
 # SageAttention wheel URL (see: https://github.com/woct0rdho/SageAttention/releases)
-# IMPORTANT: Must match your PYTORCH_VERSION above!
 # Format: sageattention-{VERSION}+{CUDA}torch{TORCH}.post{POST}-cp39-abi3-win_amd64.whl
 # Examples:
 # - For PyTorch 2.8.0+cu128: sageattention-2.2.0+cu128torch2.8.0.post3-cp39-abi3-win_amd64.whl
 # - For PyTorch 2.9.0+cu128: sageattention-2.2.0+cu128torch2.9.0.post3-cp39-abi3-win_amd64.whl
 # - For PyTorch 2.7.0+cu124: sageattention-2.2.0+cu124torch2.7.0.post3-cp39-abi3-win_amd64.whl
-SAGEATTENTION_WHEEL_URL = "https://github.com/woct0rdho/SageAttention/releases/download/v2.2.0-windows.post4/sageattention-2.2.0+cu128torch2.9.0andhigher.post4-cp39-abi3-win_amd64.whl"
+SAGEATTENTION_WHEEL_URL = "https://github.com/woct0rdho/SageAttention/releases/download/v2.2.0-windows.post4/sageattention-2.2.0+cu128torch2.8.0andhigher.post4-cp39-abi3-win_amd64.whl"
 
 # Custom nodes to clone - Required for WAN Animate 2.2
 CUSTOM_NODES = (
@@ -75,6 +77,7 @@ CUSTOM_NODES = (
 )
 
 # Models to download from HuggingFace
+# Uncomment the line "MODELS = {}" at the end of the 'MODELS' list to disable
 MODELS = {
     "clip_vision": ["clip_vision_h.safetensors"],
     "detection": [
@@ -92,6 +95,8 @@ MODELS = {
     "text_encoders": ["umt5-xxl-enc-bf16.safetensors"],
     "vae": ["Wan2_1_VAE_bf16.safetensors"]
 }
+
+# MODELS = {} # Uncomment to disable model downloads
 
 # Minimum Requirements
 MIN_PYTHON_VERSION = (3, 9)
@@ -124,7 +129,6 @@ class Config:
     venv_name: str = VENV_NAME
     pytorch_version: str = PYTORCH_VERSION
     huggingface_base: str = HUGGINGFACE_BASE
-    triton_version: str = TRITON_VERSION
     sageattention_wheel_url: str = SAGEATTENTION_WHEEL_URL
     custom_nodes: Tuple[str, ...] = CUSTOM_NODES
     models: Dict[str, List[str]] = field(default_factory=lambda: MODELS.copy())
@@ -137,6 +141,9 @@ class Config:
     internet_check_delay: int = INTERNET_CHECK_DELAY
     progress_log_interval: int = PROGRESS_LOG_INTERVAL
     max_logged_output_lines: int = MAX_LOGGED_OUTPUT_LINES
+
+    # Triton formats it's downloads as "triton-windows<3.6" for version 3.5, so we add 0.1 to the version to get the correct version number, assuming the user set TRITON_VERSION = "3.5"
+    triton_version: str = "triton-windows<" + str(float(TRITON_VERSION) + 0.1)
     
     # CLI Flags (set from command line arguments)
     no_cache: bool = False
@@ -2043,7 +2050,7 @@ def build_config_from_args(args) -> Optional[Config]:
         config = Config(**config_params)
     except Exception as e:
         print(f"ERROR: Failed to create configuration: {e}", file=sys.stderr)
-        return 1
+        return None
     
     # Validate install path early
     try:
