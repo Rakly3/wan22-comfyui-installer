@@ -38,16 +38,16 @@ python install_comfyui-wan22.py --help
 ```
 
 ### default settings:
-> 1. Validate prerequisites (Windows, Python, Git, internet, disk space)
-> 2. Download & extract ComfyUI v0.3.65 source
-> 3. Downloads models in background
-> 4. Create Python virtual environment
-> 5. Install PyTorch 2.9.0 + CUDA 12.8
-> 6. Install ComfyUI dependencies
-> 7. Clone 8 WAN Animate 2.2 required custom nodes
-> 8. Install Triton Windows, SageAttention, hf_transfer
-> 9. Wait for model downloads to complete (~40GB)
-> 10. Create launch scripts (.bat & .ps1)
+ 1. Validates prerequisites (Windows, Python, Git, internet, disk space)
+ 2. Download & extract ComfyUI v0.3.65 source
+ 3. Downloads models in background
+ 4. Create Python virtual environment
+ 5. Install PyTorch 2.9.0 + CUDA 12.8
+ 6. Install ComfyUI dependencies
+ 7. Clone 8 WAN Animate 2.2 required custom nodes
+ 8. Install Triton Windows, SageAttention, hf_transfer
+ 9. Wait for model downloads to complete (~40GB)
+ 10. Create launch scripts (.bat & .ps1)
 
 **Note:** *Everything is configurable in the script.*
 
@@ -56,7 +56,7 @@ python install_comfyui-wan22.py --help
 ## 📦 Models
 
 | Category | Files | Size | Description |
-|----------|-------|------|-------------|
+|----------:|:-------:|------:|-------------|
 | **clip_vision** | 1 | 1.2GB | CLIP vision encoder |
 | **detection** | 4 | 3.6GB | Pose estimation & object detection models |
 | **diffusion_models** | 1 | 16.5GB | Main WAN Animate 2.2 model (14B parameters, fp8) |
@@ -85,7 +85,7 @@ Downloaded automatically from [HuggingFace/Aitrepreneur/FLX](https://huggingface
 
 <br>
 
-## ⚙️ Command Line Arguments
+## 🐍 Command Line Arguments
 
 ```bash
 --python VERSION         # Python version for venv (e.g., "3.12", "3.11.5")
@@ -95,14 +95,19 @@ Downloaded automatically from [HuggingFace/Aitrepreneur/FLX](https://huggingface
 --venv NAME              # Custom venv folder name (default: "venv")
 --no-cache               # Skip pip cache
 --skip-models            # Skip model downloads
+
 --reinstall-comfyui      # Force re-download ComfyUI and extract
+--clear-venv             # Clear venv only (no reinstall, exits after clearing)
+--reinstall-venv         # Clear venv and reinstall all packages
+--upgrade-venv           # Upgrade Python version
+--upgrade-deps           # Upgrade pip/setuptools only
 ```
 
 **Note:** *Command-line arguments override script settings.*
 
 <br>
 
-## **Examples:**
+**Examples:**
 
 ```bash
 # Use Python 3.12 with custom path
@@ -119,32 +124,6 @@ python install_comfyui-wan22.py --skip-models
 
 # Fix corrupted ComfyUI installation (keeps venv/models)
 python install_comfyui-wan22.py --reinstall-comfyui
-```
-
-<br>
-
-### 🐍 Virtual Environment Management
-
-```bash
---clear-venv         # Clear venv only (no reinstall, exits after clearing)
---reinstall-venv     # Clear venv and reinstall all packages
---upgrade-venv       # Upgrade Python version
---upgrade-deps       # Upgrade pip/setuptools only
---no-cache           # Force redownload pip packages
---skip-models        # Skip model downloads
---reinstall-comfyui  # Force re-download ComfyUI and extract
-```
-
-**Examples:**
-```bash
-# Clear venv only
-python install_comfyui-wan22.py --clear-venv
-
-# Clear and reinstall virtual environment
-python install_comfyui-wan22.py --reinstall-venv --no-cache
-
-# Upgrade to Python 3.12
-python install_comfyui-wan22.py --upgrade-venv --python 3.12
 ```
 
 <br>
@@ -169,51 +148,6 @@ cd ComfyUI-0.3.65
 venv\Scripts\activate.bat
 python main.py --listen localhost --port 8188
 ```
-
-### 🌐 Access ComfyUI:
-- **Default URL:** http://localhost:8188
-
-<br>
-
-## 📝 Common Tasks
-
-### ⏭️ Skipping Model Downloads
-
-For quick testing or if you want to download models manually:
-
-```bash
-python install_comfyui-wan22.py --skip-models
-```
-
-> **📥 Manual Download:** Models can be downloaded from: https://huggingface.co/Aitrepreneur/FLX
-
-### Re-running After Failures
-
-If installation or model downloads fail:
-
-```bash
-# Try re-running the script
-# Try with different settings if needed
-
-python install_comfyui-wan22.py
-```
-
-### Fixing Broken ComfyUI Installation
-
-```bash
-# Re-download ComfyUI and re-extract
-python install_comfyui-wan22.py --reinstall-comfyui
-```
-
-### Fresh Virtual Environment Installation
-
-```bash
-# Clear venv and reinstall all packages
-python install_comfyui-wan22.py --reinstall-venv
-
-# Or manually delete the venv directory
-```
-
 <br>
 
 ## 🔧 Troubleshooting
@@ -227,11 +161,6 @@ python install_comfyui-wan22.py --reinstall-venv
 | **SageAttention version mismatch error** | Edit `SAGEATTENTION_WHEEL_URL` to match your `PYTORCH_VERSION`. Check [SageAttention releases](https://github.com/woct0rdho/SageAttention/releases). |
 | **Model downloads fail** | Re-run script (retries failed downloads only). Check log file for specific errors. Slow/unstable internet may require multiple runs. |
 | **Prerequisites check failed error** | Check `comfyui_installation.log`. Common: Python < 3.9, Git not installed, < 60GB free space, no internet. |
-| **Corrupted ComfyUI files** | Run `python install_comfyui-wan22.py --reinstall-comfyui` to re-extract (preserves venv/models). |
-| **requirements.txt not found error** | ComfyUI extraction failed or incomplete. Run `python install_comfyui-wan22.py --reinstall-comfyui`. |
-| **PowerShell script blocked** | Run as Admin: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
-| **Port 8188 already in use** | Edit `COMFYUI_LOCAL_PORT = 8188` (or other port) in script before install. |
-
 
 <br>
 
@@ -241,6 +170,10 @@ python install_comfyui-wan22.py --reinstall-venv
 - **Triton Windows:** https://github.com/woct0rdho/triton-windows/releases
 - **SageAttention:** https://github.com/woct0rdho/SageAttention/releases
 - **PyTorch:** https://pytorch.org/get-started/locally/
+- **Wan 2.2:** https://github.com/Wan-Video/Wan2.2
+- **Models:** https://huggingface.co/Aitrepreneur/FLX
+- **AItrepeeneur:** https://www.youtube.com/watch?v=aTGAiZe6SXU
+
 
 <br>
 
@@ -266,5 +199,6 @@ This installer script is provided as-is. ComfyUI and all dependencies have their
 **⭐ If this installer helped you, please consider giving it a star! ⭐**
 
 </div>
+
 
 
