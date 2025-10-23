@@ -1,3 +1,6 @@
+# Never blindly trust any installer scripts!
+I have no control over the software this installer downloads. You shouldn't even trust this script wthout reviewing it!
+
 # ComfyUI WAN Animate 2.2 - Automated Installer
 
 > Fully automated Python installation script for ComfyUI with WAN Animate 2.2 support, featuring parallel model downloads, CUDA optimization, and comprehensive error handling.
@@ -263,4 +266,5 @@ This installer script is provided as-is. ComfyUI and all dependencies have their
 **⭐ If this installer helped you, please consider giving it a star! ⭐**
 
 </div>
+
 
